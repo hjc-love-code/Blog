@@ -32,20 +32,21 @@
 using namespace std;
 string str;
 int main(){
-  cin>>str;
-  int flag=0;
-  int len=str.size();
-  str[len] = '#';
-;    for(int i=1;i<len;i+=2){
-      if ( (str[i] =='#' && str[i+1] =='#') || (str[i] !='#' && str[i+1] !='#') ) continue;
-      //判断对称的情况，正着判断在此处更加方便
-      else {
-          flag=1;
-          break;
-      }
-  }
-  if(flag) cout<<"No";
-  else cout<<"Yes";
-  return 0;
+    cin>>str;
+    int flag=0;
+    int len=str.size();
+    str[len] = '#';
+    for(int i=1;i<len;i+=2){
+        if ( (str[i] =='#' && str[i+1] =='#') || (str[i] !='#' && str[i+1] !='#') )
+            continue;
+            //判断对称的情况，正着判断在此处更加方便
+        else {
+            flag=1;
+            break;
+        }
+    }
+    if(flag) cout<<"No";
+    else cout<<"Yes";
+    return 0;
 }
 ```
