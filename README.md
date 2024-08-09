@@ -2,6 +2,7 @@
     如果二叉树的左右子树的结构是对称的，即两棵子树皆为空，或者皆不空，则称该二叉树是对称的。编程判断给定的二叉树是否对称.
     二叉树用顺序结构给出，若读到#则为空，二叉树T1=ABCDE，T2=ABCD#E，如果二叉树是对称的，输出“Yes”，反之输出“No”。
     二叉树T1是对称的，T2是不对称的。
+    
     输入：二叉树用顺序结构给出，若读到#则为空。
     输出：如果二叉树是对称的，输出“Yes”，反之输出“No”
     
@@ -39,6 +40,7 @@ int main(){
 ```
 ## 树的统计
     给定一棵树，输出树的根root，孩子最多的结点max以及他的孩子。
+    
     输入：第一行：n（结点个数≤100），m（边数≤200）。
     以下m行：每行两个结点x和y，表示y是x的孩子(x,y≤1000)。
     输出：第一行：树根：root；
@@ -170,5 +172,69 @@ int main() {
 	cin >> midstring;
 	func(0, prestring.size() - 1, 0, midstring.size() - 1);
 	// 传入整个树 
+}
+```
+## FBI树
+	我们可以把由“0”和“1”组成的字符串分为三类：全“0”串称为B串，全“1”串称为I串，既含“0”又含“1”的串则称为F串。
+	FBI树是一种二叉树，它的结点类型也包括F结点，B结点和I结点三种。由一个长度为2N的“01”串S可以构造出一棵FBI树T，递归的构造方法如下：
+	T的根结点为R，其类型与串S的类型相同；
+	若串S的长度大于1，将串S从中间分开，分为等长的左右子串S1和S2；由左子串S1构造R 的左子树T1，由右子串S2构造R的右子树T2。
+	现在给定一个长度为2N的“01”串，请用上述构造方法构造出一棵FBI树，并输出它的后序遍历序列。
+	
+	输入：第一行是一个整数N（0≤N≤10），第二行是一个长度为2N的“01”串。
+ 	输出：一行，这一行只包含一个字符串，即FBI树的后序遍历序列。
+	
+	【输入样例】 
+ 	3 10001011 
+  	【输出样例】 
+   	IBEBBBEIBFIIIFE 
 
+```c++
+#include<bits/stdc++.h>
+using namespace std;
+
+int n;
+string s;
+
+
+// 这里将使用下表（索引）在原数组中取区间的想法废弃了
+// 改为传入字符串作为下一个子树 
+void create(string last, int x) {
+	if (x < 0) {
+		// n代表2 ^ n，但是FBI树包含叶子，也就是没有左右子树，要运行n + 1次递归 
+		return;
+	} 
+	// substr(起始位置，要取的长度)
+	create(last.substr(0, last.size() / 2), x - 1); 
+	// 左子树 
+	create(last.substr(last.size() / 2, last.size() / 2), x - 1);
+	// 右子树 
+	bool one, zero;
+	one = zero = 0;
+	// 一定要注意，必须和字符比较，否则始终为true 
+	for (int i = 0; i < last.size(); i++) {
+		if (last[i] == '1') {
+			one = true;
+		}
+		if (last[i] == '0') {
+			zero = true;
+		}
+	}
+	if (one && zero) {
+		cout << 'F';
+	}
+	else if (one == true && zero == false) {
+		cout << 'I';
+	}
+	else if (zero == true && one == false){
+		cout << 'B';
+	}
+	// 输出 
+}
+
+int main() {
+	cin >> n;
+	cin >> s;
+	create(s, n);
+}
 ```
